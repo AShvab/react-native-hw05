@@ -185,7 +185,7 @@ const ProfileScreen = () => {
                       alignItems: "center",
                     }}
                   >
-                    <Feather name="map-pin" size={24} color={"#BDBDBD"} />
+                    <Feather name="map-pin" size={24} color={"#BDBDBD"} onPress={() => navigation.navigate("Map", item)}/>
                     <Text
                       style={{
                         textDecorationLine: "underline",

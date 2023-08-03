@@ -17,6 +17,7 @@ import { Feather, Ionicons } from "@expo/vector-icons";
 import { gStyle } from "../styles/style";
 import { useNavigation } from "@react-navigation/native";
 
+
 const MapScreen = () => {
   const navigation = useNavigation();
   return (
@@ -101,4 +102,3 @@ const styles = StyleSheet.create({
 export default MapScreen;
 
 
-// Android API_KEY = AIzaSyBH-CWfPwr6eUZJ35XAYPSCw4TgrZyZ5mk
