@@ -21,6 +21,7 @@ import { gStyle } from "../styles/style";
 import Rectangle1 from "../assets/images/Rectangle1.jpg";
 import Rectangle2 from "../assets/images/Rectangle2.jpg";
 import Rectangle3 from "../assets/images/Rectangle3.jpg";
+import train from "../assets/images/train.jpg";
 import userPhoto from "../assets/images/userPhoto.jpg";
 
 const ProfileScreen = () => {
@@ -48,6 +49,14 @@ const ProfileScreen = () => {
       location: "Italy",
       img: Rectangle3,
       key: "3",
+    },
+    {
+      name: "Західний експрес",
+      comments: "1",
+      likes: "200",
+      location: "France",
+      img: train,
+      key: "4",
     },
   ]);
 
@@ -224,7 +233,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     backgroundColor: "#F6F6F6",
-    borderRadius: 16,
+    borderRadius: 16, 
   },
   logoutButton: {
     position: "absolute",

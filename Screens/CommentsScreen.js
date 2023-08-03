@@ -13,9 +13,9 @@ import {
 import Svg, { Circle, Path } from "react-native-svg";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { gStyle } from "../styles/style";
-import { useNavigation } from "@react-navigation/native";
+import { TabRouter, useNavigation } from "@react-navigation/native";
 
-const CommentsScreen = () => {
+const CommentsScreen = ({route}) => {
   const navigation = useNavigation();
 
   return (
@@ -55,10 +55,25 @@ const CommentsScreen = () => {
             </TouchableOpacity>
             <Text style={gStyle.heading}>Коментарі</Text>
           </View>
+          <View>
+           <Image source={route.params.img} style={styles.img}/>
+          </View>
         </View>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 };
+
+
+const styles = StyleSheet.create({
+  img: {
+    width: "100%",
+    height: 240,
+    marginTop: 40,
+    marginLeft: "auto",
+    marginRight: "auto",
+    borderRadius: 8,
+  },
+});
 
 export default CommentsScreen;
