@@ -13,6 +13,7 @@ import MapScreen from "./Screens/MapScreen";
 import CommentsScreen from './Screens/CommentsScreen';
 import ProfileScreen from './Screens/ProfileScreen';
 import CreatePostsScreen from './Screens/CreatePostsScreen';
+import PostsScreen from './Screens/PostsScreen';
 
 const MainStack = createStackNavigator(); 
 
@@ -30,7 +31,8 @@ export default function App() {
     <NavigationContainer >
     {/* <MainStack.Navigator initialRouteName="Login" > */}
     <MainStack.Navigator initialRouteName="CreatePostsScreen" > 
-    <MainStack.Screen name="Create" component={CreatePostsScreen} options={{ headerShown: false }} />    
+    <MainStack.Screen name="Create" component={CreatePostsScreen} options={{ headerShown: false }} />  
+    <MainStack.Screen name="Posts" component={PostsScreen} options={{ headerShown: false }}/>  
     <MainStack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />  
       <MainStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
       <MainStack.Screen name="Registration" component={RegistrationScreen} options={{ headerShown: false }} />

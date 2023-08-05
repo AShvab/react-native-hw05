@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Camera } from "expo-camera";
+import * as Location from "expo-location";
 
 import {
   View,
@@ -24,32 +25,8 @@ const CreatePostsScreen = () => {
   const [postPhoto, setPostPhoto] = useState(null);
   const [photoName, setPhotoName] = useState("");
   const [location, setLocation] = useState("");
-
-  // const handleButtonPress = async () => {
-  //   try {
-  //     const permissionResult =
-  //       await ImagePicker.requestMediaLibraryPermissionsAsync();
-  //     if (permissionResult.granted === false) {
-  //       Alert.alert(
-  //         "Permission Denied",
-  //         "Please enable media library permission to select a photo."
-  //       );
-  //       return;
-  //     }
-  //     const options = {
-  //       allowsEditing: true,
-  //       aspect: [4, 3],
-  //       quality: 1,
-  //       mediaTypes: ImagePicker.MediaTypeOptions.All,
-  //     };
-  //     const result = await ImagePicker.launchImageLibraryAsync(options);
-  //     if (!result.canceled) {
-  //       setPostPhoto(result.assets[0].uri);
-  //     }
-  //   } catch (error) {
-  //     console.log("Error in handlePlusButtonPress:", error);
-  //   }
-  // };
+  const [userLocation, setUserLocation] = useState(null);
+  const [isButtonActive, setIsButtonActive] = useState(false);
 
   const handleAddPhoto = async () => {
     const { status } = await Camera.requestCameraPermissionsAsync();
@@ -68,12 +45,39 @@ const CreatePostsScreen = () => {
     } else {
       console.log("Camera permission not granted");
     }
-  }
+  };
+
+  const checkInputForm = () => {
+    if (photoName && location && postPhoto) {
+      setIsButtonActive(true);
+    } else {
+      setIsButtonActive(false);
+    }
+  };
+
+  useEffect(() => {
+    checkInputForm();
+  }, [photoName, location, postPhoto]);
 
   const removePostPhoto = () => {
     setPostPhoto(null);
     setPhotoName("");
     setLocation("");
+  };
+
+  const onSubmitClick = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      console.log("Permission to access location was denied");
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    const coords = {
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    };
+    setUserLocation(coords);
+    navigation.navigate("Posts");
   };
 
   return (
@@ -88,11 +92,6 @@ const CreatePostsScreen = () => {
               onPress={() => navigation.goBack()}
               style={gStyle.backButton}
             >
-              {/* <Feather
-                name="arrow-left"
-                size={24}
-                color={"rgba(33, 33, 33, 0.8)"}
-              /> */}
               <Svg
                 width={24}
                 height={24}
@@ -140,7 +139,6 @@ const CreatePostsScreen = () => {
                     : {},
                 ]}
               >
-                {/* <Feather name="camera" size={24} color={"#BDBDBD"} /> */}
                 <Svg
                   width="24"
                   height="24"
@@ -190,15 +188,15 @@ const CreatePostsScreen = () => {
               style={styles.inputTextMap}
               placeholder="Місцевість..."
               value={location}
-              onChangeText={(text) => setLocation(text)}
+              onChangeText={setLocation}
             />
           </View>
           <View style={styles.publishButtonContainer}>
             <TouchableOpacity
-              // onPress={console.log("Post")}
+              onPress={onSubmitClick}
               style={[
                 gStyle.button,
-                postPhoto
+                isButtonActive
                   ? {
                       backgroundColor: "#FF6C00",
                     }
@@ -208,12 +206,12 @@ const CreatePostsScreen = () => {
                     },
               ]}
               title="Опублікувати"
-              disabled={!postPhoto}
+              disabled={!isButtonActive}
             >
               <Text
                 style={[
                   gStyle.buttonText,
-                  postPhoto
+                  isButtonActive
                     ? {
                         backgroundColor: "#FF6C00",
                       }
