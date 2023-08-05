@@ -15,51 +15,12 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import Background from "../assets/images/backgroundImg.jpg";
 import Svg, { Path } from "react-native-svg";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { gStyle } from "../styles/style";
 
-import Rectangle1 from "../assets/images/Rectangle1.jpg";
-import Rectangle2 from "../assets/images/Rectangle2.jpg";
-import Rectangle3 from "../assets/images/Rectangle3.jpg";
-import train from "../assets/images/train.jpg";
-import userPhoto from "../assets/images/userPhoto.jpg";
+import posts from "../posts";
 
 const ProfileScreen = () => {
-  const [posts, setPosts] = useState([
-    {
-      name: "Ліс",
-      comments: "8",
-      likes: "153",
-      location: "Ukraine",
-      img: Rectangle1,
-      key: "1",
-    },
-    {
-      name: "Захід на Чорному морі",
-      comments: "3",
-      likes: "200",
-      location: "Ukraine",
-      img: Rectangle2,
-      key: "2",
-    },
-    {
-      name: "8",
-      comments: "50",
-      likes: "200",
-      location: "Italy",
-      img: Rectangle3,
-      key: "3",
-    },
-    {
-      name: "Західний експрес",
-      comments: "1",
-      likes: "200",
-      location: "France",
-      img: train,
-      key: "4",
-    },
-  ]);
-
   const [login, setLogin] = useState("Natali Romanova");
   const [userPhoto, setUserPhoto] = useState(userPhoto);
   const navigation = useNavigation();
@@ -185,7 +146,12 @@ const ProfileScreen = () => {
                       alignItems: "center",
                     }}
                   >
-                    <Feather name="map-pin" size={24} color={"#BDBDBD"} onPress={() => navigation.navigate("Map", item)}/>
+                    <Feather
+                      name="map-pin"
+                      size={24}
+                      color={"#BDBDBD"}
+                      onPress={() => navigation.navigate("Map", item)}
+                    />
                     <Text
                       style={{
                         textDecorationLine: "underline",
@@ -233,7 +199,7 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     backgroundColor: "#F6F6F6",
-    borderRadius: 16, 
+    borderRadius: 16,
   },
   logoutButton: {
     position: "absolute",

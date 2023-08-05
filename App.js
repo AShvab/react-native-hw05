@@ -29,16 +29,16 @@ export default function App() {
   }
   return (
     <NavigationContainer >
-    {/* <MainStack.Navigator initialRouteName="Login" > */}
-    <MainStack.Navigator initialRouteName="CreatePostsScreen" > 
+    <MainStack.Navigator initialRouteName="Login" >
+    {/* <MainStack.Navigator initialRouteName="CreatePostsScreen" >  */}
     <MainStack.Screen name="Create" component={CreatePostsScreen} options={{ headerShown: false }} />  
     <MainStack.Screen name="Posts" component={PostsScreen} options={{ headerShown: false }}/>  
     <MainStack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />  
-      <MainStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-      <MainStack.Screen name="Registration" component={RegistrationScreen} options={{ headerShown: false }} />
-      <MainStack.Screen name="Home" component={Home} options={{ title: "Start screen", headerShown: false }} />
-      <MainStack.Screen name="Map" component={MapScreen} options={{ headerShown: false }}/>
-      <MainStack.Screen name="Comments" component={CommentsScreen} options={{ headerShown: false }} />      
+    <MainStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+    <MainStack.Screen name="Registration" component={RegistrationScreen} options={{ headerShown: false }} />
+    <MainStack.Screen name="Home" component={Home} options={{ title: "Start screen", headerShown: false }} />
+    <MainStack.Screen name="Map" component={MapScreen} options={{ headerShown: false }}/>
+    <MainStack.Screen name="Comments" component={CommentsScreen} options={{ headerShown: false }} />      
     </MainStack.Navigator>
     <StatusBar style="auto" />
   </NavigationContainer>

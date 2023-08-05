@@ -5,7 +5,6 @@ import * as Location from "expo-location";
 import {
   View,
   Text,
-  Alert,
   TextInput,
   StyleSheet,
   TouchableOpacity,
@@ -28,6 +27,8 @@ const CreatePostsScreen = () => {
   const [userLocation, setUserLocation] = useState(null);
   const [isButtonActive, setIsButtonActive] = useState(false);
 
+  const [postPhotoUri, setPostPhotoUri] = useState(null);
+
   const handleAddPhoto = async () => {
     const { status } = await Camera.requestCameraPermissionsAsync();
 
@@ -40,7 +41,7 @@ const CreatePostsScreen = () => {
       });
 
       if (!result.canceled && result.assets.length > 0) {
-        setPostPhoto(result.assets[0].uri);
+        setPostPhoto({ uri: result.assets[0].uri });
       }
     } else {
       console.log("Camera permission not granted");
@@ -59,24 +60,23 @@ const CreatePostsScreen = () => {
     checkInputForm();
   }, [photoName, location, postPhoto]);
 
-  const removePostPhoto = () => {
+  const removePost = () => {
     setPostPhoto(null);
     setPhotoName("");
     setLocation("");
   };
 
   const onSubmitClick = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      console.log("Permission to access location was denied");
-    }
-
-    let location = await Location.getCurrentPositionAsync({});
-    const coords = {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
+    const data = {
+      img: postPhoto,
+      name: photoName,
+      comments: [],
+      likes: 0,
+      location: location,
+      userLocation: userLocation,
     };
-    setUserLocation(coords);
+    posts.push(data);
+    removePost();
     navigation.navigate("Posts");
   };
 
@@ -121,7 +121,7 @@ const CreatePostsScreen = () => {
           <View style={{ paddingTop: 28 }}>
             <View style={styles.postPhotoContainer}>
               <Image
-                source={postPhoto ? { uri: postPhoto } : null}
+                source={postPhoto ? postPhoto : null}
                 style={{
                   width: "100%",
                   height: 240,
@@ -226,7 +226,7 @@ const CreatePostsScreen = () => {
             </TouchableOpacity>
           </View>
           <TouchableOpacity
-            onPress={removePostPhoto}
+            onPress={removePost}
             style={styles.removePostButton}
           >
             <Feather name="trash-2" size={24} color={"#BDBDBD"} />

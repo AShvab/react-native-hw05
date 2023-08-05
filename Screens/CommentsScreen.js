@@ -10,10 +10,10 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from "react-native";
-import Svg, { Circle, Path } from "react-native-svg";
+import Svg, { Path } from "react-native-svg";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { gStyle } from "../styles/style";
-import { TabRouter, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
 const CommentsScreen = ({route}) => {
   const navigation = useNavigation();
