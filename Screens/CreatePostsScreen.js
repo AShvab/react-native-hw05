@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Camera } from "expo-camera";
 
 import {
   View,
@@ -24,31 +25,50 @@ const CreatePostsScreen = () => {
   const [photoName, setPhotoName] = useState("");
   const [location, setLocation] = useState("");
 
-  const handleButtonPress = async () => {
-    try {
-      const permissionResult =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (permissionResult.granted === false) {
-        Alert.alert(
-          "Permission Denied",
-          "Please enable media library permission to select a photo."
-        );
-        return;
-      }
-      const options = {
+  // const handleButtonPress = async () => {
+  //   try {
+  //     const permissionResult =
+  //       await ImagePicker.requestMediaLibraryPermissionsAsync();
+  //     if (permissionResult.granted === false) {
+  //       Alert.alert(
+  //         "Permission Denied",
+  //         "Please enable media library permission to select a photo."
+  //       );
+  //       return;
+  //     }
+  //     const options = {
+  //       allowsEditing: true,
+  //       aspect: [4, 3],
+  //       quality: 1,
+  //       mediaTypes: ImagePicker.MediaTypeOptions.All,
+  //     };
+  //     const result = await ImagePicker.launchImageLibraryAsync(options);
+  //     if (!result.canceled) {
+  //       setPostPhoto(result.assets[0].uri);
+  //     }
+  //   } catch (error) {
+  //     console.log("Error in handlePlusButtonPress:", error);
+  //   }
+  // };
+
+  const handleAddPhoto = async () => {
+    const { status } = await Camera.requestCameraPermissionsAsync();
+
+    if (status === "granted") {
+      const result = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-      };
-      const result = await ImagePicker.launchImageLibraryAsync(options);
-      if (!result.canceled) {
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      });
+
+      if (!result.canceled && result.assets.length > 0) {
         setPostPhoto(result.assets[0].uri);
       }
-    } catch (error) {
-      console.log("Error in handlePlusButtonPress:", error);
+    } else {
+      console.log("Camera permission not granted");
     }
-  };
+  }
 
   const removePostPhoto = () => {
     setPostPhoto(null);
@@ -99,7 +119,7 @@ const CreatePostsScreen = () => {
             <Text style={gStyle.heading}>Створити публікацію</Text>
           </View>
 
-          <View style={{ paddingLeft: 16, paddingRight: 16, paddingTop: 28 }}>
+          <View style={{ paddingTop: 28 }}>
             <View style={styles.postPhotoContainer}>
               <Image
                 source={postPhoto ? { uri: postPhoto } : null}
@@ -110,7 +130,7 @@ const CreatePostsScreen = () => {
                 }}
               />
               <TouchableOpacity
-                onPress={handleButtonPress}
+                onPress={handleAddPhoto}
                 style={[
                   styles.addPhotoButton,
                   postPhoto
@@ -152,7 +172,7 @@ const CreatePostsScreen = () => {
             {" "}
             {postPhoto ? "Редагувати фото" : "Завантажте фото"}
           </Text>
-          <View style={{ paddingLeft: 16, paddingRight: 16 }}>
+          <View>
             <TextInput
               style={[styles.inputText, styles.firstInput]}
               placeholder="Назва..."
@@ -175,6 +195,7 @@ const CreatePostsScreen = () => {
           </View>
           <View style={styles.publishButtonContainer}>
             <TouchableOpacity
+              // onPress={console.log("Post")}
               style={[
                 gStyle.button,
                 postPhoto
@@ -250,7 +271,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   text: {
-    paddingLeft: 16,
     color: "#BDBDBD",
     fontSize: 16,
   },
@@ -276,7 +296,7 @@ const styles = StyleSheet.create({
   },
   mapPin: {
     position: "absolute",
-    paddingLeft: 16,
+    paddingLeft: 0,
     bottom: 13,
     left: 0,
   },
@@ -286,8 +306,6 @@ const styles = StyleSheet.create({
   publishButtonContainer: {
     alignItems: "center",
     marginTop: 10,
-    paddingLeft: 16,
-    paddingRight: 16,
   },
   removePostButton: {
     marginTop: 100,
