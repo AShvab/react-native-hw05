@@ -1,104 +1,103 @@
-import React from "react";
-import MapView, { Marker } from "react-native-maps";
+import React, {  useEffect, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  Image,
-  Keyboard,
-  Platform,
-  KeyboardAvoidingView,
   Dimensions,
 } from "react-native";
-import Svg, { Path } from "react-native-svg";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import MapView, { Marker } from "react-native-maps";
+import { Feather } from "@expo/vector-icons";
+import * as Location from "expo-location";
 import { gStyle } from "../styles/style";
-import { useNavigation } from "@react-navigation/native";
 
+const MapScreen = ({navigation})=> {
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
 
-const MapScreen = () => {
-  const navigation = useNavigation();
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      try {
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+      } catch (error) {
+        setErrorMsg("Error getting location: " + error.message);
+      }
+    })();
+  }, []);
+
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView
-        style={{}}
-        behavior={Platform.OS == "ios" ? "padding" : "height"}
-      >
-        <View style={gStyle.screenContainer}>
-          <View style={gStyle.headingContainer}>
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={gStyle.backButton}
-            >
-              <Svg
-                width={24}
-                height={24}
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <Path
-                  d="M20 12H4"
-                  stroke="#212121"
-                  stroke-opacity="0.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <Path
-                  d="M10 18L4 12L10 6"
-                  stroke="#212121"
-                  stroke-opacity="0.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </Svg>
-            </TouchableOpacity>
-            <Text style={gStyle.heading}>Карта</Text>
-          </View>
-        </View>
-        <View style={styles.container}>
-      <MapView
-        style={styles.mapStyle}
-        region={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        mapType="standard"
-        minZoomLevel={15}
-        onMapReady={() => console.log("Map is ready")}
-        onRegionChange={() => console.log("Region change")}
-      >
-        <Marker
-          title="I am here"
-          coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
-          description='Hello'
-        />
-      </MapView>
-    </View>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
-    
+    <>
+      <View style={styles.headerWrap}>
+        <TouchableOpacity
+          style={styles.arrowSvg}
+          activeOpacity={0.6}
+          onPress={() => navigation.goBack()}
+        >
+                    <Feather
+              name="arrow-left"
+              size={24}
+              color={"#BDBDBD"}
+              style={styles.backButton}
+            />
+        </TouchableOpacity>
+        <Text style={gStyle.heading}>Карта</Text>
+      </View>
+      <View style={styles.container}>
+        <MapView
+          style={styles.mapStyle}
+          region={{
+            latitude:  50.423575,
+            longitude: 30.382908,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05,
+          }}
+          showsUserLocation={true}
+        >
+          <Marker
+            title="I am here"
+            coordinate={{latitude:  50.423575, longitude: 30.382908 }}
+            description="My location"
+          />
+        </MapView>
+      </View>
+    </>
   );
-};
-
+}
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  headerWrap: {
+    fontSize: 30,
+    paddingTop: 55,
+    paddingBottom: 7,
+    textAlign: "center",
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+  },
+
+  arrowSvg: {
+    position: "absolute",
+    left: 16,
+    bottom: 7,
   },
   mapStyle: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
   },
+  backButton: {
+    paddingLeft: 10,
+  },
 });
 
 export default MapScreen;
-
-

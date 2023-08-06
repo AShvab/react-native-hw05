@@ -27,7 +27,7 @@ const CreatePostsScreen = () => {
   const [userLocation, setUserLocation] = useState(null);
   const [isButtonActive, setIsButtonActive] = useState(false);
 
-  const [postPhotoUri, setPostPhotoUri] = useState(null);
+  // const [postPhotoUri, setPostPhotoUri] = useState(null);
 
   const handleAddPhoto = async () => {
     const { status } = await Camera.requestCameraPermissionsAsync();
