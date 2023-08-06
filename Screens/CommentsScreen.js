@@ -119,8 +119,7 @@ const CommentsScreen = ({ route }) => {
                     : styles.guestCommentTextContainer,
                 ]}
               >
-                {/* <Text style={styles.commentText}>{item.text}</Text>
-                <Text style={[styles.commentDate]}>{item.date}</Text> */}
+
                  <Text style={styles.commentText}>{item.text}</Text>
           {isCommentByUser ? (
             <Text style={[styles.commentDate, styles.userCommentDate]}>
