@@ -3,7 +3,7 @@ import Rectangle2 from "./assets/images/Rectangle2.jpg";
 import Rectangle3 from "./assets/images/Rectangle3.jpg";
 import train from "./assets/images/train.jpg";
 import guestCircle1 from "./assets/images/guestCircle1.jpg";
-import userCircle from "./assets/images/urerCircle.jpg";
+import userCircle from "./assets/images/userCircle.jpg";
 
 export default posts = [
   {
@@ -111,18 +111,6 @@ export default posts = [
         author: "guest1",
         text: "Really love your most recent photo. I’ve been trying to capture the same thing for a few months and would love some tips!",
         date: "09 червня, 2020 | 08:40",
-      },
-      {
-        userCirclePhoto: userCircle,
-        author: "user",
-        text: "A fast 50mm like f1.8 would help with the bokeh. I’ve been using primes as they tend to get a bit sharper images.",
-        date: "09 червня, 2020 | 09:14",
-      },
-      {
-        guestCirclePhoto: guestCircle1,
-        author: "guest1",
-        text: "Thank you! That was very helpful!",
-        date: "09 червня, 2020 | 09:20",
       },
     ],
   },

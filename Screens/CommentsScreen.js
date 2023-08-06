@@ -12,8 +12,9 @@ import {
   FlatList,
 } from "react-native";
 import Svg, { Path } from "react-native-svg";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Feather} from "@expo/vector-icons";
 import posts from "../posts";
+import userCircle from "../assets/images/userCircle.jpg";
 
 import { gStyle } from "../styles/style";
 import { useNavigation } from "@react-navigation/native";
@@ -22,6 +23,7 @@ const CommentsScreen = ({ route }) => {
   const navigation = useNavigation();
   const [focusedInput, setFocusedInput] = useState(null);
   const [comment, setComment] = useState("");
+  const [comments, setComments] = useState(route.params.commentsUnderPost);
 
   const handleFocus = (placeholder) => {
     setFocusedInput(placeholder);
@@ -35,8 +37,14 @@ const CommentsScreen = ({ route }) => {
     setComment("");
   };
 
-  const handleSubmitComment = () => {
-    if (comment !== "") console.log("Comment submitted:", comment);
+  const handleSubmitComment = async () => {
+    const data = {
+      author: "user",
+        text: comment,
+        date: "Just now",
+        userCirclePhoto: userCircle,
+    };
+    comments.push(data);
     clearInput();
     Keyboard.dismiss();
   };
@@ -111,8 +119,18 @@ const CommentsScreen = ({ route }) => {
                     : styles.guestCommentTextContainer,
                 ]}
               >
-                <Text style={styles.commentText}>{item.text}</Text>
-                <Text style={[styles.commentDate]}>{item.date}</Text>
+                {/* <Text style={styles.commentText}>{item.text}</Text>
+                <Text style={[styles.commentDate]}>{item.date}</Text> */}
+                 <Text style={styles.commentText}>{item.text}</Text>
+          {isCommentByUser ? (
+            <Text style={[styles.commentDate, styles.userCommentDate]}>
+              {item.date}
+            </Text>
+          ) : (
+            <Text style={[styles.commentDate, styles.guestCommentDate]}>
+              {item.date}
+            </Text>
+          )}
               </View>
             </View>
           );
@@ -162,7 +180,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   bottomContainer: {
-    // flex: 1,
     position: "relative",
     justifyContent: "flex-end",
     marginBottom: 10,
@@ -202,6 +219,13 @@ const styles = StyleSheet.create({
     fontSize: 10,
     color: "#BDBDBD",
     marginTop: 4,
+    textAlign:"left",
+  },
+  userCommentDate: {
+    textAlign: "left",
+  },
+  guestCommentDate: {
+    textAlign: "right",
   },
   userCommentContainer: {
     flexDirection: "row-reverse",
